@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>App de Coleta de Entulho - Secretaria de Meio Ambiente</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #f8fffe 0%, #e8f5e8 100%);
+            color: #1a3327;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 60px 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 100px;
+            padding: 80px 0;
+            background: white;
+            border-radius: 24px;
+            box-shadow: 0 4px 20px rgba(26, 51, 39, 0.08);
+            border: 1px solid #e8f5e8;
+        }
+
+        .header h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: #1a3327;
+            letter-spacing: -0.02em;
+        }
+
+        .header .subtitle {
+            font-size: 1.5rem;
+            color: #4a7c59;
+            font-weight: 400;
+            margin-bottom: 30px;
+        }
+
+        .header .tagline {
+            font-size: 1.2rem;
+            color: #6b7280;
+            background: #f0f9ff;
+            padding: 16px 32px;
+            border-radius: 50px;
+            display: inline-block;
+            border: 1px solid #e0f2fe;
+        }
+
+        .section {
+            margin-bottom: 120px;
+        }
+
+        .section h2 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 20px;
+            color: #1a3327;
+            letter-spacing: -0.02em;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            font-size: 1.2rem;
+            color: #6b7280;
+            margin-bottom: 60px;
+            font-weight: 400;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 24px;
+            margin-top: 40px;
+        }
+
+        .feature-card {
+            background: white;
+            border-radius: 16px;
+            padding: 32px;
+            border: 1px solid #e8f5e8;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 32px rgba(26, 51, 39, 0.12);
+            border-color: #4a7c59;
+        }
+
+        .feature-card h4 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 16px;
+            color: #1a3327;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .feature-card ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .feature-card li {
+            margin-bottom: 8px;
+            padding-left: 20px;
+            position: relative;
+            color: #4b5563;
+            font-size: 0.95rem;
+            font-weight: 400;
+        }
+
+        .feature-card li:before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            color: #4a7c59;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .icon {
+            font-size: 1.5rem;
+            opacity: 0.8;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+            margin-top: 40px;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 16px;
+            padding: 32px;
+            text-align: center;
+            border: 1px solid #e8f5e8;
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 32px rgba(26, 51, 39, 0.12);
+        }
+
+        .stat-card h4 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #1a3327;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+        }
+
+        .stat-card p {
+            font-size: 0.95rem;
+            color: #4b5563;
+            line-height: 1.6;
+        }
+
+        .highlights {
+            background: white;
+            border-radius: 24px;
+            padding: 60px;
+            border: 1px solid #e8f5e8;
+            margin: 80px 0;
+            box-shadow: 0 4px 20px rgba(26, 51, 39, 0.08);
+        }
+
+        .highlights h3 {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #1a3327;
+            text-align: center;
+            margin-bottom: 40px;
+            letter-spacing: -0.02em;
+        }
+
+        .highlights-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+        }
+
+        .highlight-item {
+            background: #f8fffe;
+            border-radius: 12px;
+            padding: 24px;
+            border: 1px solid #e8f5e8;
+            transition: all 0.3s ease;
+        }
+
+        .highlight-item:hover {
+            background: #f0f9ff;
+            border-color: #4a7c59;
+        }
+
+        .highlight-item h4 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #1a3327;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .highlight-item p {
+            color: #4b5563;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        .scroll-indicator {
+            position: fixed;
+            top: 50%;
+            right: 24px;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            z-index: 1000;
+        }
+
+        .scroll-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #d1d5db;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .scroll-dot.active {
+            background: #4a7c59;
+            transform: scale(1.5);
+        }
+
+        .floating-accent {
+            position: fixed;
+            top: 20%;
+            right: 10%;
+            width: 200px;
+            height: 200px;
+            background: radial-gradient(circle, rgba(74, 124, 89, 0.1) 0%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+            animation: float 8s ease-in-out infinite;
+            z-index: -1;
+        }
+
+        .floating-accent:nth-child(2) {
+            top: 60%;
+            left: 10%;
+            animation-delay: 4s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+
+        @media (max-width: 768px) {
+            .header h1 { font-size: 2.5rem; }
+            .header .subtitle { font-size: 1.2rem; }
+            .section h2 { font-size: 2rem; }
+            .features-grid { grid-template-columns: 1fr; }
+            .highlights { padding: 40px 30px; }
+            .scroll-indicator { display: none; }
+            .container { padding: 40px 16px; }
+        }
+
+        .emoji {
+            font-size: 1.5rem;
+            margin-right: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="floating-accent"></div>
+    <div class="floating-accent"></div>
+
+    <div class="scroll-indicator">
+        <div class="scroll-dot active" onclick="scrollToSection('header')"></div>
+        <div class="scroll-dot" onclick="scrollToSection('cidadao')"></div>
+        <div class="scroll-dot" onclick="scrollToSection('administrativo')"></div>
+        <div class="scroll-dot" onclick="scrollToSection('diferenciais')"></div>
+        <div class="scroll-dot" onclick="scrollToSection('resultados')"></div>
+    </div>
+
+    <div class="container">
+        <!-- Header -->
+        <div class="header" id="header">
+            <h1><span class="emoji">🌱</span>APP DE COLETA DE ENTULHO</h1>
+            <p class="subtitle">Secretaria de Meio Ambiente</p>
+            <p class="tagline">Gestão inteligente para uma cidade mais sustentável</p>
+        </div>
+
+        <!-- Módulo Cidadão -->
+        <div class="section" id="cidadao">
+            <h2><span class="emoji">📱</span>MÓDULO CIDADÃO</h2>
+            <p class="section-subtitle">Aplicativo intuitivo para engajamento da população</p>
+            
+            <div class="features-grid">
+                <div class="feature-card">
+                    <h4><span class="icon">👤</span>Cadastro e Login</h4>
+                    <ul>
+                        <li>Cadastro rápido por telefone, e-mail ou CPF</li>
+                        <li>Login seguro com autenticação Firebase</li>
+                    </ul>
+                </div>
+                
+                <div class="feature-card">
+                    <h4><span class="icon">📋</span>Solicitação de Coleta</h4>
+                    <ul>
+                        <li>Envio de fotos do entulho</li>
+                        <li>Localização automática via GPS</li>
+                        <li>Descrição do material</li>
+                        <li>Número de protocolo automático</li>
+                    </ul>
+                </div>
+                
+                <div class="feature-card">
+                    <h4><span class="icon">📊</span>Acompanhamento</h4>
+                    <ul>
+                        <li>Status em tempo real</li>
+                        <li>Histórico completo com fotos</li>
+                        <li>Notificações automáticas</li>
+                    </ul>
+                </div>
+                
+                <div class="feature-card">
+                    <h4><span class="icon">🗓️</span>Agendamento</h4>
+                    <ul>
+                        <li>Sugestão inteligente de datas</li>
+                        <li>Baseado na disponibilidade municipal</li>
+                    </ul>
+                </div>
+                
+                <div class="feature-card">
+                    <h4><span class="icon">💬</span>Comunicação</h4>
+                    <ul>
+                        <li>Chat direto com equipe responsável</li>
+                        <li>Suporte técnico integrado</li>
+                    </ul>
+                </div>
+                
+                <div class="feature-card">
+                    <h4><span class="icon">🌱</span>Educação Ambiental</h4>
+                    <ul>
+                        <li>Conteúdo sobre descarte correto</li>
+                        <li>Dicas de reciclagem</li>
+                        <li>Informações sobre leis ambientais</li>
+                    </ul>
+                </div>
+                
+                <div class="feature-card">
+                    <h4><span class="icon">🚨</span>Denúncias</h4>
+                    <ul>
+                        <li>Reporte de descarte irregular</li>
+                        <li>Envio com foto e localização</li>
+                        <li>Acompanhamento da resolução</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Módulo Administrativo -->
+        <div class="section" id="administrativo">
+            <h2><span class="emoji">💻</span>MÓDULO ADMINISTRATIVO</h2>
+            <p class="section-subtitle">Dashboard completo para gestão eficiente</p>
+            
+            <div class="features-grid">
+                <div class="feature-card">
+                    <h4><span class="icon">📋</span>Gestão de Solicitações</h4>
+                    <ul>
+                        <li>Filtros avançados por região e status</li>
+                        <li>Visualização em mapa interativo</li>
+                        <li>Acesso completo ao histórico</li>
+                    </ul>
+                </div>
+                
+                <div class="feature-card">
+                    <h4><span class="icon">👥</span>Controle de Equipes</h4>
+                    <ul>
+                        <li>Cadastro por região</li>
+                        <li>Atribuição automática de coletas</li>
+                        <li>Monitoramento de performance</li>
+                    </ul>
+                </div>
+                
+                <div class="feature-card">
+                    <h4><span class="icon">🗺️</span>Mapa de Calor</h4>
+                    <ul>
+                        <li>Identificação de áreas críticas</li>
+                        <li>Volume de solicitações por região</li>
+                        <li>Planejamento estratégico</li>
+                    </ul>
+                </div>
+                
+                <div class="feature-card">
+                    <h4><span class="icon">📊</span>Relatórios</h4>
+                    <ul>
+                        <li>Analytics por bairro e equipe</li>
+                        <li>Métricas de tempo e eficiência</li>
+                        <li>Exportação para Excel/PDF</li>
+                    </ul>
+                </div>
+                
+                <div class="feature-card">
+                    <h4><span class="icon">🚛</span>Gestão de Frota</h4>
+                    <ul>
+                        <li>Controle de veículos</li>
+                        <li>Registro de manutenção</li>
+                        <li>Otimização de rotas</li>
+                    </ul>
+                </div>
+                
+                <div class="feature-card">
+                    <h4><span class="icon">📝</span>Auditoria</h4>
+                    <ul>
+                        <li>Rastreabilidade completa</li>
+                        <li>Histórico de todas as ações</li>
+                        <li>Relatórios de conformidade</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Diferenciais -->
+        <div class="highlights" id="diferenciais">
+            <h3><span class="emoji">🎯</span>DIFERENCIAIS</h3>
+            <div class="highlights-grid">
+                <div class="highlight-item">
+                    <h4><span class="icon">✨</span>Interface Intuitiva</h4>
+                    <p>Design moderno e acessível para todos os usuários</p>
+                </div>
+                
+                <div class="highlight-item">
+                    <h4><span class="icon">📱</span>Multiplataforma</h4>
+                    <p>Disponível para Android, iOS e web</p>
+                </div>
+                
+                <div class="highlight-item">
+                    <h4><span class="icon">🔄</span>Modo Offline</h4>
+                    <p>Funciona mesmo sem conexão à internet</p>
+                </div>
+                
+                <div class="highlight-item">
+                    <h4><span class="icon">🚀</span>Implementação Rápida</h4>
+                    <p>Solução pronta para deploy imediato</p>
+                </div>
+                
+                <div class="highlight-item">
+                    <h4><span class="icon">🔍</span>Transparência</h4>
+                    <p>Processo transparente com total rastreabilidade</p>
+                </div>
+                
+                <div class="highlight-item">
+                    <h4><span class="icon">🌍</span>Impacto Ambiental</h4>
+                    <p>Contribuição direta para sustentabilidade urbana</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Resultados -->
+        <div class="section" id="resultados">
+            <h2><span class="emoji">📈</span>RESULTADOS ESPERADOS</h2>
+            <p class="section-subtitle">Impacto positivo na gestão ambiental municipal</p>
+            
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <h4><span class="icon">🌿</span>Redução de Entulhos</h4>
+                    <p>Diminuição significativa do descarte irregular em espaços públicos</p>
+                </div>
+                
+                <div class="stat-card">
+                    <h4><span class="icon">⚡</span>Eficiência Operacional</h4>
+                    <p>Otimização de recursos e redução de custos operacionais</p>
+                </div>
+                
+                <div class="stat-card">
+                    <h4><span class="icon">📊</span>Dados Estratégicos</h4>
+                    <p>Informações precisas para tomada de decisões</p>
+                </div>
+                
+                <div class="stat-card">
+                    <h4><span class="icon">👥</span>Engajamento Cidadão</h4>
+                    <p>Maior participação da população nas questões ambientais</p>
+                </div>
+                
+                <div class="stat-card">
+                    <h4><span class="icon">🏆</span>Imagem Institucional</h4>
+                    <p>Fortalecimento da credibilidade da Secretaria</p>
+                </div>
+                
+                <div class="stat-card">
+                    <h4><span class="icon">🌱</span>Sustentabilidade</h4>
+                    <p>Promoção de práticas ambientais responsáveis</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function scrollToSection(sectionId) {
+            const element = document.getElementById(sectionId);
+            element.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function updateScrollIndicator() {
+            const sections = ['header', 'cidadao', 'administrativo', 'diferenciais', 'resultados'];
+            const dots = document.querySelectorAll('.scroll-dot');
+            
+            sections.forEach((sectionId, index) => {
+                const section = document.getElementById(sectionId);
+                const rect = section.getBoundingClientRect();
+                
+                if (rect.top <= 100 && rect.bottom >= 100) {
+                    dots.forEach(dot => dot.classList.remove('active'));
+                    dots[index].classList.add('active');
+                }
+            });
+        }
+
+        window.addEventListener('scroll', updateScrollIndicator);
+        updateScrollIndicator();
+    </script>
+</body>
+</html>
