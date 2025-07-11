@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>App Coleta de Entulho - Comparativo</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.5;
+            color: #1a1a1a;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 10px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #2e7d32, #388e3c);
+            color: white;
+            padding: 20px;
+            text-align: center;
+            position: relative;
+        }
+        
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="25" cy="25" r="1" fill="white" opacity="0.1"/><circle cx="75" cy="75" r="1" fill="white" opacity="0.1"/><circle cx="50" cy="10" r="1" fill="white" opacity="0.1"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+            opacity: 0.3;
+        }
+        
+        .header h1 {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 5px;
+            position: relative;
+        }
+        
+        .header p {
+            font-size: 14px;
+            opacity: 0.9;
+            position: relative;
+        }
+        
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0;
+        }
+        
+        .version-card {
+            padding: 20px;
+            position: relative;
+            background: white;
+        }
+        
+        .version-card:first-child {
+            border-right: 1px solid #e0e0e0;
+        }
+        
+        .version-card.recommended {
+            background: linear-gradient(135deg, #f8f9ff, #e8f4f8);
+            position: relative;
+        }
+        
+        .version-card.recommended::before {
+            content: '✨ RECOMENDADO';
+            position: absolute;
+            top: 0;
+            right: 0;
+            background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+            color: white;
+            padding: 5px 12px;
+            font-size: 10px;
+            font-weight: bold;
+            border-radius: 0 0 0 10px;
+        }
+        
+        .version-header {
+            margin-bottom: 20px;
+        }
+        
+        .version-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #2e7d32;
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .version-price {
+            font-size: 28px;
+            font-weight: 800;
+            color: #1565c0;
+            margin-bottom: 5px;
+        }
+        
+        .version-subtitle {
+            font-size: 12px;
+            color: #666;
+            margin-bottom: 12px;
+        }
+        
+        .timeline {
+            background: linear-gradient(135deg, #e8f5e8, #f1f8e9);
+            padding: 10px 12px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            border-left: 4px solid #2e7d32;
+        }
+        
+        .timeline-title {
+            font-weight: 600;
+            color: #2e7d32;
+            font-size: 12px;
+            margin-bottom: 2px;
+        }
+        
+        .timeline-value {
+            font-size: 14px;
+            font-weight: 700;
+            color: #1a1a1a;
+        }
+        
+        .features-section {
+            margin-bottom: 20px;
+        }
+        
+        .features-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding-bottom: 6px;
+            border-bottom: 2px solid #e0e0e0;
+        }
+        
+        .features-list {
+            list-style: none;
+            display: grid;
+            gap: 6px;
+        }
+        
+        .features-list li {
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 4px 0;
+            border-radius: 6px;
+            transition: all 0.2s;
+        }
+        
+        .features-list li.included {
+            color: #2e7d32;
+        }
+        
+        .features-list li.excluded {
+            color: #999;
+        }
+        
+        .features-list li::before {
+            font-size: 12px;
+            width: 16px;
+            height: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+        
+        .features-list li.included::before {
+            content: "✓";
+            background: #2e7d32;
+            color: white;
+            font-weight: bold;
+        }
+        
+        .features-list li.excluded::before {
+            content: "×";
+            background: #ccc;
+            color: white;
+            font-weight: bold;
+        }
+        
+        .tech-stack {
+            grid-column: 1 / -1;
+            padding: 20px;
+            background: linear-gradient(135deg, #f0f7ff, #e3f2fd);
+            border-top: 1px solid #e0e0e0;
+        }
+        
+        .tech-title {
+            font-weight: 600;
+            color: #1565c0;
+            margin-bottom: 15px;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .tech-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        
+        .tech-item {
+            background: white;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 500;
+            border: 1px solid #ddd;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        
+        .benefits-section {
+            grid-column: 1 / -1;
+            padding: 20px;
+            background: linear-gradient(135deg, #e8f5e8, #f1f8e9);
+            border-top: 1px solid #e0e0e0;
+        }
+        
+        .benefits-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: #2e7d32;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 12px;
+        }
+        
+        .benefit-item {
+            background: white;
+            padding: 12px;
+            border-radius: 12px;
+            border-left: 4px solid #2e7d32;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        
+        .benefit-title {
+            font-weight: 600;
+            color: #2e7d32;
+            margin-bottom: 4px;
+            font-size: 12px;
+        }
+        
+        .benefit-desc {
+            font-size: 11px;
+            color: #666;
+            line-height: 1.4;
+        }
+        
+        .recommendation {
+            grid-column: 1 / -1;
+            padding: 20px;
+            background: linear-gradient(135deg, #fff3e0, #ffeaa7);
+            border-top: 1px solid #e0e0e0;
+        }
+        
+        .recommendation-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: #e65100;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        
+        .recommendation-text {
+            font-size: 13px;
+            line-height: 1.6;
+            color: #333;
+        }
+        
+        .footer {
+            grid-column: 1 / -1;
+            padding: 15px 20px;
+            background: #f8f9fa;
+            text-align: center;
+            font-size: 10px;
+            color: #666;
+            border-top: 1px solid #e0e0e0;
+        }
+        
+        /* Mobile First - Ajustes para dispositivos móveis */
+        @media (max-width: 768px) {
+            body {
+                padding: 5px;
+            }
+            
+            .container {
+                border-radius: 15px;
+            }
+            
+            .comparison-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .version-card:first-child {
+                border-right: none;
+                border-bottom: 1px solid #e0e0e0;
+            }
+            
+            .header {
+                padding: 15px;
+            }
+            
+            .header h1 {
+                font-size: 20px;
+            }
+            
+            .version-card {
+                padding: 15px;
+            }
+            
+            .version-title {
+                font-size: 16px;
+            }
+            
+            .version-price {
+                font-size: 24px;
+            }
+            
+            .benefits-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .tech-list {
+                justify-content: center;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .header h1 {
+                font-size: 18px;
+            }
+            
+            .version-title {
+                font-size: 15px;
+            }
+            
+            .version-price {
+                font-size: 22px;
+            }
+            
+            .features-list li {
+                font-size: 11px;
+            }
+            
+            .version-card {
+                padding: 12px;
+            }
+            
+            .benefits-section,
+            .tech-stack,
+            .recommendation {
+                padding: 15px;
+            }
+        }
+        
+        /* Animações sutis */
+        .version-card {
+            transition: transform 0.2s ease;
+        }
+        
+        .version-card:hover {
+            transform: translateY(-2px);
+        }
+        
+        .benefit-item {
+            transition: transform 0.2s ease;
+        }
+        
+        .benefit-item:hover {
+            transform: translateY(-1px);
+        }
+        
+        .tech-item {
+            transition: transform 0.2s ease;
+        }
+        
+        .tech-item:hover {
+            transform: translateY(-1px);
+        }
+        
+        /* Melhor legibilidade */
+        @media (prefers-color-scheme: dark) {
+            /* Mantém o design claro para melhor legibilidade */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🏢 App Coleta de Entulho</h1>
+            <p>Comparativo de Versões - Secretaria de Meio Ambiente</p>
+        </div>
+        
+        <div class="comparison-grid">
+            <!-- Versão Básica -->
+            <div class="version-card">
+                <div class="version-header">
+                    <div class="version-title">📱 Versão Básica (MVP)</div>
+                    <div class="version-price">R$ 10.000</div>
+                    <div class="version-subtitle">Funcionalidades essenciais para começar rapidamente</div>
+                </div>
+                
+                <div class="timeline">
+                    <div class="timeline-title">⏱️ Cronograma</div>
+                    <div class="timeline-value">4 semanas (1 mês)</div>
+                </div>
+                
+                <div class="features-section">
+                    <div class="features-title">📱 App Cidadão</div>
+                    <ul class="features-list">
+                        <li class="included">Cadastro simples</li>
+                        <li class="included">Login básico Firebase</li>
+                        <li class="included">Solicitação com 1 foto</li>
+                        <li class="included">Endereço manual</li>
+                        <li class="included">Descrição do material</li>
+                        <li class="included">Protocolo automático</li>
+                        <li class="included">Consulta de status</li>
+                        <li class="included">Histórico pessoal</li>
+                        <li class="excluded">Geolocalização automática</li>
+                        <li class="excluded">Múltiplas fotos</li>
+                        <li class="excluded">Notificações push</li>
+                        <li class="excluded">Agendamento inteligente</li>
+                    </ul>
+                </div>
+                
+                <div class="features-section">
+                    <div class="features-title">💻 Dashboard Web</div>
+                    <ul class="features-list">
+                        <li class="included">Login administrativo</li>
+                        <li class="included">Lista de solicitações</li>
+                        <li class="included">Visualização de chamados</li>
+                        <li class="included">Mudança de status</li>
+                        <li class="included">Relatório básico</li>
+                        <li class="excluded">Mapas interativos</li>
+                        <li class="excluded">Gestão de equipes</li>
+                        <li class="excluded">Analytics avançados</li>
+                        <li class="excluded">Sistema de auditoria</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- Versão Completa -->
+            <div class="version-card recommended">
+                <div class="version-header">
+                    <div class="version-title">🚀 Versão Completa</div>
+                    <div class="version-price">R$ 60.000</div>
+                    <div class="version-subtitle">Solução profissional com todas as funcionalidades</div>
+                </div>
+                
+                <div class="timeline">
+                    <div class="timeline-title">⏱️ Cronograma</div>
+                    <div class="timeline-value">8 semanas (2 meses)</div>
+                </div>
+                
+                <div class="features-section">
+                    <div class="features-title">📱 App Cidadão</div>
+                    <ul class="features-list">
+                        <li class="included">Autenticação completa</li>
+                        <li class="included">Múltiplas fotos HD</li>
+                        <li class="included">Geolocalização precisa</li>
+                        <li class="included">Protocolo automático</li>
+                        <li class="included">Classificação de material</li>
+                        <li class="included">Rastreamento tempo real</li>
+                        <li class="included">Notificações push</li>
+                        <li class="included">Agendamento inteligente</li>
+                        <li class="included">Sistema de denúncias</li>
+                        <li class="included">Conteúdo educativo</li>
+                        <li class="included">Modo offline</li>
+                    </ul>
+                </div>
+                
+                <div class="features-section">
+                    <div class="features-title">💻 Dashboard Admin</div>
+                    <ul class="features-list">
+                        <li class="included">Controle de demandas</li>
+                        <li class="included">Mapas interativos</li>
+                        <li class="included">Gestão de equipes</li>
+                        <li class="included">Analytics espacial</li>
+                        <li class="included">Business Intelligence</li>
+                        <li class="included">Gestão de frota</li>
+                        <li class="included">Sistema de auditoria</li>
+                        <li class="included">Relatórios personalizados</li>
+                        <li class="included">Otimização de rotas</li>
+                        <li class="included">KPIs em tempo real</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="tech-stack">
+                <div class="tech-title">🔧 Stack Tecnológica</div>
+                <div class="tech-list">
+                    <div class="tech-item">Flutter</div>
+                    <div class="tech-item">Firebase</div>
+                    <div class="tech-item">Firestore</div>
+                    <div class="tech-item">Firebase Auth</div>
+                    <div class="tech-item">Google Maps</div>
+                    <div class="tech-item">Flutter Web</div>
+                    <div class="tech-item">Firebase Hosting</div>
+                </div>
+            </div>
+            
+            <div class="benefits-section">
+                <div class="benefits-title">🎯 Benefícios para a Secretaria</div>
+                <div class="benefits-grid">
+                    <div class="benefit-item">
+                        <div class="benefit-title">📞 Redução de Ligações</div>
+                        <div class="benefit-desc">Elimina chamadas telefônicas e organiza demandas</div>
+                    </div>
+                    <div class="benefit-item">
+                        <div class="benefit-title">📊 Controle Centralizado</div>
+                        <div class="benefit-desc">Todas as solicitações em um só lugar</div>
+                    </div>
+                    <div class="benefit-item">
+                        <div class="benefit-title">📷 Registro Fotográfico</div>
+                        <div class="benefit-desc">Evidências visuais de cada solicitação</div>
+                    </div>
+                    <div class="benefit-item">
+                        <div class="benefit-title">🔍 Transparência</div>
+                        <div class="benefit-desc">Cidadão acompanha o andamento do serviço</div>
+                    </div>
+                    <div class="benefit-item">
+                        <div class="benefit-title">⚡ Eficiência Operacional</div>
+                        <div class="benefit-desc">Otimização de recursos e tempo</div>
+                    </div>
+                    <div class="benefit-item">
+                        <div class="benefit-title">🌱 Imagem Institucional</div>
+                        <div class="benefit-desc">Modernização e credibilidade pública</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="recommendation">
+                <div class="recommendation-title">💡 Recomendação Estratégica</div>
+                <div class="recommendation-text">
+                    <strong>Para começar:</strong> A versão básica (R$ 10.000) é ideal para validar o conceito e demonstrar valor rapidamente. Implementação em 1 mês.<br><br>
+                    
+                    <strong>Para expansão:</strong> A versão completa (R$ 60.000) oferece solução profissional com ROI comprovado. Analytics avançados e gestão completa em 2 meses.<br><br>
+                    
+                    <strong>Estratégia evolutiva:</strong> Começar com MVP e evoluir conforme necessidade. Contratos de manutenção e melhorias contínuas disponíveis.
+                </div>
+            </div>
+            
+            <div class="footer">
+                <p>Documento elaborado em <span id="current-date"></span></p>
+                <p>Desenvolvedor Low-Code - Especialista em Flutter & Firebase</p>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Atualizar data atual
+        document.getElementById('current-date').textContent = new Date().toLocaleDateString('pt-BR');
+        
+        // Animação suave ao carregar
+        document.addEventListener('DOMContentLoaded', function() {
+            document.body.style.opacity = '0';
+            document.body.style.transform = 'translateY(20px)';
+            document.body.style.transition = 'all 0.5s ease';
+            
+            setTimeout(() => {
+                document.body.style.opacity = '1';
+                document.body.style.transform = 'translateY(0)';
+            }, 100);
+        });
+        
+        // Função para impressão otimizada
+        function printDocument() {
+            window.print();
+        }
+        
+        // Atalho para impressão
+        document.addEventListener('keydown', function(e) {
+            if (e.ctrlKey && e.key === 'p') {
+                e.preventDefault();
+                printDocument();
+            }
+        });
+    </script>
+</body>
+</html>
